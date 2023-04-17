@@ -1,10 +1,8 @@
 from tkinter import *
+import tkinter as tk
 
-root = Tk()
-root.geometry("400x400")
-root.title("***JUEGA Y APRENDE***")
 
-########### FUNCIONES ###################
+########### CLASE SINGLETON ###################
 
 class Singleton:
     _instance = None
@@ -47,42 +45,107 @@ class unicoArchivo():
     def agregar_a_matriz(self, linea):
         self.file.write(linea + '\n')
 
+##########  CLASE VENTANA PRINCIPAL "#######
+class VentanaPrincipal:
+    def __init__(self, root):
+        root.geometry("500x500")
+        root.title("***JUEGA Y APRENDE***")
+        self.root = root
+        self.btn1 = Button(root, text="ESPAÑOL", bg="red",width=30,height=5, command=self.abrir_ventanaEspañol)
+        self.btn1.pack()
+        self.btn2 = Button(root, text="MATEMÁTICAS", bg="green",width=30,height=5, command=self.abrir_ventanaMatematicas)
+        self.btn2.pack()
+        self.btn3 = Button(root, text="CIENCIAS", bg="yellow", width=30, height=5, command=self.abrir_ventanaCiencias)
+        self.btn3.pack()
+        self.btn4 = Button(root, text="EST. SOCIALES", bg="blue", width=30, height=5, command=self.abrir_ventanaEspañol)
+        self.btn4.pack()
+        self.btn4 = Button(root, text="SALIR", bg="purple", width=20, height=4, command=self.exit_program)
+        self.btn4.pack()
+
+    def exit_program(self):
+        root.destroy()
+    def abrir_ventanaEspañol(self):
+        self.ventana_secundaria = Toplevel(self.root)
+        self.lbl = Label(self.ventana_secundaria, text="Contenido del archivo:")
+        self.lbl.pack()
+        self.texto = Text(self.ventana_secundaria)
+        self.texto.pack()
+        self.btn_leer = Button(self.ventana_secundaria, text="Leer archivo", command=self.leer_archivo)
+        self.btn_leer.pack()
+        self.btn_leer = Button(self.ventana_secundaria, text="jugar", command=self.jugar)
+        self.btn_leer.pack()
 
 
-def exit_program():
-    root.destroy()
-def clic_boton1():
-    texto = Label(root, text="Bienvenido a Español").grid(row=1, column=3)
-    boton6 = Button(root, text="APRENDAMOS", bg="ORANGE", width=10, height=3, command=clic_boton1).grid(row=1,column=5)
-    boton7 = Button(root, text="JUGUEMOS", bg="ORANGE", width=10, height=3, command=clic_boton1).grid(row=1, column=7)
+    def leer_archivo(self):
+        with open("español.txt", "r") as f:
+            contenido = f.read()
+        self.texto.delete("1.0", tk.END)
+        self.texto.insert(tk.END, contenido)
 
-def clic_boton2():
-    texto = Label(root, text="Bienvenido a Ciencias").grid(row=2, column=3)
-    file = unicoArchivo("ciencias.txt")
-    file = open('ciencias.txt', 'w')
-    file.write('material de ciencias ')
-    file.close()
+    def jugar(self):
+     entrada = Entry(root)
+     entrada.pack()
+     botonenviar = Button(self.ventana_secundaria, text="envias", command=self.clip)
+     botonenviar.pack()
+     texto = Label(root, text="se envio")
+     texto.pack()
+    def abrir_ventanaMatematicas(self):
+        self.ventana_secundaria = Toplevel(self.root)
+        self.lbl = Label(self.ventana_secundaria, text="Contenido del archivo:")
+        self.lbl.pack()
+        self.texto = Text(self.ventana_secundaria)
+        self.texto.pack()
+        self.btn_leer = Button(self.ventana_secundaria, text="Leer archivo", command=self.leer_archivoMate)
+        self.btn_leer.pack()
+        self.btn_leer = Button(self.ventana_secundaria, text="jugar", command=self.jugar)
+        self.btn_leer.pack()
+    def leer_archivoMate(self):
+        with open("mate.txt", "r") as f:
+            contenido = f.read()
+        self.texto.delete("1.0", tk.END)
+        self.texto.insert(tk.END, contenido)
 
-def clic_boton3():
-    texto = Label(root, text="Bienvenido a Mate").grid(row=3, column=3)
+    def abrir_ventanaCiencias(self):
+        self.ventana_secundaria = Toplevel(self.root)
+        self.lbl = Label(self.ventana_secundaria, text="**** MATERIAL CIENCIAS ****")
+        self.lbl.pack()
+        self.texto = Text(self.ventana_secundaria)
+        self.texto.pack()
+        self.btn_leer = Button(self.ventana_secundaria, text="Leer archivo", command=self.Archivo_Ciencias)
+        self.btn_leer.pack()
+        self.btn_leer1 = Button(self.ventana_secundaria, text="jugar", command=self.ventana_guardar)
+        self.btn_leer1.pack()
+         #nuevo
+    def Archivo_Ciencias(self):
+        with open("ciencias.txt", "r") as f:
+            contenido = f.read()
+        self.texto.delete("1.0", tk.END)
+        self.texto.insert(tk.END, contenido)
+    def ventana_guardar(self):
+        self.lbl = Label(self.ventana_secundaria, text="Ingrese la respuesta de cada pregunta, enumerandolas:")
+        self.lbl.pack()
+        self.entrada = Entry(self.ventana_secundaria)
+        self.entrada.pack()
+        self.btn_guardar = Button(self.ventana_secundaria, text="Guardar", command=self.guardar_archivo)
+        self.btn_guardar.pack()
+        self.btn_leerpreguntas = Button(self.ventana_secundaria, text="leer", command=self.guardar_archivo)
+        self.btn_leerpreguntas.pack()
+# # guardar
+    def guardar_archivo(self):
+         contenido = self.entrada.get()
+         with open("preguntasciencias.txt", "a") as f:
+            f.write(contenido + "\n")
+         self.entrada.delete(0, tk.END)
+         self.leer_archivo()
 
-def clic_boton4():
-        texto = Label(root, text="Bienvenido a Est. Sociales").grid(row=4, column=3)
+         with open("preguntasciencias.txt", "r") as f:
+            contenido = f.read()
+         self.texto.delete("1.0", tk.END)
+         self.texto.insert(tk.END, contenido)
 
 
-############ CREACION DE LOS BOTONES PARA EL MENU #########
-######## LLAMADO A LAS FUNCIONES #######
-
-boton1 =Button(root,text="ESPAÑOL", bg="red",width=10,height=4, command=clic_boton1).grid(row=1, column=2)
-boton2 =Button(root,text="CIENCIAS", bg="green",width=10,height=4, command=clic_boton2).grid(row=2, column=2)
-boton3 =Button(root,text="MATE", bg="yellow",width=10,height=4, command=clic_boton3).grid(row=3, column=2)
-boton4 =Button(root,text="EST. SOCIALES", bg="blue",width=10,height=4, command=clic_boton4).grid(row=4, column=2)
-boton5 =Button(root,text="SALIR", bg="PURPLE",width=10,height=4, command=exit_program).grid(row=5, column=2)
-
-
-
-# Configurar la ventana principal
-
-
+# # #Configurar la ventana principal
+root = tk.Tk()
+app = VentanaPrincipal(root)
 root.mainloop()
 
