@@ -117,12 +117,16 @@ class VentanaPrincipal:
          self.ventana_secundaria = Toplevel(self.root)
          self.lbl = Label(self.ventana_secundaria, text="**** SECUENCIAS ****")
          self.lbl.pack()
-         self.lbl = Label(self.ventana_secundaria, text="escribe una secuencia de numeros : ")
+         self.lbl = Label(self.ventana_secundaria, text="escribe la secuencia de numeros : ")
          self.lbl.pack()
          self.entrada = Entry(self.ventana_secundaria)
          self.entrada.pack()
          self.btn_guardarSecuencia = Button(self.ventana_secundaria, text="GUARDAR", command=self.guardar_ArchivoSecuencias)
          self.btn_guardarSecuencia.pack()
+
+         self.secuencias1 = ("5", "10", "15", "20", ".....")
+         self.texto.delete("1.0", tk.END)
+         self.texto.insert(tk.END, self.secuencias1)
 
     def guardar_ArchivoSecuencias(self):
         contenido = self.entrada.get()
@@ -216,3 +220,6 @@ class VentanaPrincipal:
 root = tk.Tk()
 app = VentanaPrincipal(root)
 root.mainloop()
+
+
+
