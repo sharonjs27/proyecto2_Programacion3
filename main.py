@@ -1,2 +1,2 @@
+import funciones
 
-from funciones import Singleton, unicoArchivo
